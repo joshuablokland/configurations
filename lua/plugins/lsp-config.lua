@@ -3,9 +3,8 @@ return {
     "williamboman/mason.nvim",
     config = function()
       require("mason").setup()
-    end,
+    end
   },
-
   {
     "williamboman/mason-lspconfig.nvim",
     config = function()
@@ -13,9 +12,8 @@ return {
         ensure_installed = { "lua_ls", "ts_ls", "pyright" },
         automatic_installation = true,
       })
-    end,
+    end
   },
-
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -24,17 +22,15 @@ return {
         settings = {
           Lua = {
             diagnostics = { globals = { "vim" } },
-          },
-        },
+          }
+        }
       })
 
       vim.lsp.config("ts_ls", {})
       vim.lsp.config("pyright", {})
 
-      -- Enable all servers
       vim.lsp.enable({ "lua_ls", "ts_ls", "pyright" })
 
-      -- Keymaps on attach
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
           local opts = { buffer = args.buf }
@@ -46,8 +42,8 @@ return {
           vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
           vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
           vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-        end,
+        end
       })
-    end,
-  },
+    end
+  }
 }

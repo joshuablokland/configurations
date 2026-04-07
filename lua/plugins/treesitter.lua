@@ -26,7 +26,7 @@ return {
       pattern = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
       callback = function()
         vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-      end,
+      end
     })
   end
 }
