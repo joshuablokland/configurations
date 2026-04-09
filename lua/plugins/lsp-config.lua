@@ -9,7 +9,7 @@ return {
     "williamboman/mason-lspconfig.nvim",
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "ts_ls", "pyright" },
+        ensure_installed = { "jdlts", "lua_ls", "ts_ls", "pyright" },
         automatic_installation = true,
       })
     end
@@ -17,7 +17,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      -- Server-specific settings
+      vim.lsp.config("java_language_server", {})
       vim.lsp.config("lua_ls", {
         settings = {
           Lua = {
@@ -29,7 +29,7 @@ return {
       vim.lsp.config("ts_ls", {})
       vim.lsp.config("pyright", {})
 
-      vim.lsp.enable({ "lua_ls", "ts_ls", "pyright" })
+      vim.lsp.enable({ "java_language_server", "lua_ls", "ts_ls", "pyright" })
 
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
@@ -43,6 +43,31 @@ return {
           vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
           vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
         end
+      })
+    end
+  },
+  {
+    "mfussenegger/nvim-jdtls",
+    ft = "java",
+    config = function()
+      local data_dir   = vim.fn.stdpath("data")
+      local lombok_jar = data_dir .. "/mason/packages/jdtls/lombok.jar"
+      local launcher   = vim.fn.glob(data_dir .. "/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_*.jar")
+      local workspace  = vim.fn.expand("~/.cache/jdtls/") .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+      require("jdtls").start_or_attach({
+        cmd = {
+          "java",
+          "-javaagent:" .. lombok_jar,  -- this is the key line
+          "-jar", launcher,
+          "-configuration", data_dir .. "/mason/packages/jdtls/config_mac",
+          "-data", workspace,
+        },
+        root_dir = require("jdtls.setup").find_root({ "pom.xml", "build.gradle", ".git" }),
+        settings = {
+          java = {
+            configuration = { updateBuildConfiguration = "automatic" },
+          },
+        },
       })
     end
   }
