@@ -9,7 +9,7 @@ return {
     "williamboman/mason-lspconfig.nvim",
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "jdlts", "lua_ls", "ts_ls", "pyright" },
+        ensure_installed = { "jdlts", "lua_ls", "ts_ls", "terraformls", "pyright" },
         automatic_installation = true,
       })
     end
@@ -26,9 +26,9 @@ return {
         }
       })
 
-      vim.lsp.config("ts_ls", {})
       vim.lsp.config("pyright", {})
-
+      vim.lsp.config("ts_ls", {})
+      vim.lsp.config("terraformls", {})
       vim.lsp.enable({ "java_language_server", "lua_ls", "ts_ls", "pyright" })
 
       vim.api.nvim_create_autocmd("LspAttach", {
