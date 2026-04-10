@@ -17,7 +17,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      vim.lsp.config("java_language_server", {})
+      -- vim.lsp.config("java_language_server", {})
       vim.lsp.config("lua_ls", {
         settings = {
           Lua = {
@@ -29,7 +29,7 @@ return {
       vim.lsp.config("pyright", {})
       vim.lsp.config("ts_ls", {})
       vim.lsp.config("terraformls", {})
-      vim.lsp.enable({ "java_language_server", "lua_ls", "ts_ls", "pyright" })
+      vim.lsp.enable({ "lua_ls", "terraformls", "ts_ls", "pyright" }) -- "java_language_server"
 
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
@@ -70,5 +70,18 @@ return {
         },
       })
     end
+  },
+  {
+    "saghen/blink.cmp",
+    version = "1.*",
+    opts = {
+      keymap = { preset = "default" }, -- <C-space> trigger, <C-y> confirm, <C-e> cancel
+      completion = {
+        documentation = { auto_show = true },
+      },
+      sources = {
+        default = { "lsp", "path", "buffer", "snippets" },
+      },
+    },
   }
 }
