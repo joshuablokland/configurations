@@ -6,6 +6,7 @@ vim.cmd("set number")
 
 vim.g.mapleader = " "
 vim.opt.relativenumber = true
+vim.opt.scrolloff = 999
 vim.diagnostic.config({ virtual_text = true })
 
 vim.keymap.set('n', '<leader>cp', function()
