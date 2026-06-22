@@ -9,7 +9,7 @@ return {
     "williamboman/mason-lspconfig.nvim",
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "jdlts", "lua_ls", "ts_ls", "terraformls", "pyright" },
+        ensure_installed = { "jdtls", "lua_ls", "ts_ls", "terraformls", "pyright" },
         automatic_installation = true,
       })
     end
@@ -55,6 +55,12 @@ return {
       local lombok_jar = data_dir .. "/mason/packages/jdtls/lombok.jar"
       local launcher   = vim.fn.glob(data_dir .. "/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_*.jar")
       local workspace  = vim.fn.expand("~/.cache/jdtls/") .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+      local bundles = vim.split(
+        vim.fn.glob(data_dir .. '/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar'),
+        '\n',
+        { trimempty = true }
+      )
+
       require("jdtls").start_or_attach({
         cmd = {
           "java",
@@ -69,6 +75,13 @@ return {
             configuration = { updateBuildConfiguration = "automatic" },
           },
         },
+        init_options = {
+          bundles = bundles
+        }
+      })
+
+      require('jdtls').setup_dap({
+        hotcodereplace = 'auto'
       })
     end
   },
